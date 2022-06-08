@@ -1,0 +1,11 @@
+name: albco_districts
+title: albco_districts
+username:
+account: commpaslab
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 5633385
+bundleId: 5595255
+url: https://commpaslab.shinyapps.io/albco_districts/
+when: 1645211717.17203
+lastSyncTime: 1645211717.17204

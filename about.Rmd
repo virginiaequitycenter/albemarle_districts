@@ -1,0 +1,46 @@
+---
+title: "About this Work"
+date: "Februrary 10-18, 2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(sf)
+
+load("data/app_data.Rdata")
+```
+
+## What is this site for?
+
+This site is intended to support the evaluation of options developed to meet local redistricting requirements. Redistricting redraws the boundaries of election districts; within the county, these magisterial districts define the regions represented by the Board of Supervisors and School Board members. Redistricting is required after each decennial census in response to population shifts, so that districts retain relatively equal population sizes.
+
+* More about Albemarle County's redistricting process is available on the Albemarle County website: https://engage.albemarle.org/redistricting. 
+* The County is receiving public comment on the proposed alternatives through March 4, 2022. Residents are invited to comment on each option and to rank the three options: https://engage.albemarle.org/redistricting/survey_tools/community-questions
+
+
+## How can these maps be used?
+
+Users may overlay Albemarle County's proposed magisterial boundaries on a set of social and demographic data at the census tract or block group level to better understand the impacts across a range of metrics. Overlaying the proposed boundaries on one another also makes the differences among the proposals clearer.
+
+## What data is being used?
+
+The social and demographic data provided in the District Maps page comes primarily from the U.S. Census American Community Survey's 5-year (2015-2019) estimates at the tract and block group levels. These small-area population estimates are survey estimates, derived from the ACS survey sent to approximately 3.5 million addresses per year. As these are estimates derived from surveys, and not a full census, they are subject to variability due to sampling error.
+
+* The ACS data used here are taken from the Charlottesville Regional Equity Atlas Dashboard (https://commpaslab.shinyapps.io/cville-region/), a project initially developed as a collaboration between the Equity Center and the UVA Library.
+* More information about the social and demographic data is available at the U.S. Census website: https://www.census.gov/data/developers/data-sets/acs-5year.html.
+
+
+[Census Redistricting Program data](https://www.census.gov/programs-surveys/decennial-census/about/rdo.html) are provided to help state and local governments redraw electoral district boundaries that conform to the constitutional requirement that districts represent approximately equal populations. The 2020 census redistricting data provides data on the number of residents, the number of residents by race and ethnicity, and the number of residents aged 18 or over within each census block, the smallest level of geography for which basic population data is available.
+
+The 2020 census redistricting data were used to calculate the Demographic Summaries provided for each District boundary option. It is also used to produce the maps shown on the Block Data page.
+
+* More information about the Census Redistricting Data is available at the U.S. Census website: https://www.census.gov/data/datasets/2020/dec/2020-census-redistricting-summary-file-dataset.html. 
+
+The proposed boundaries were developed and shared by Albemarle County. 
+
+## Who made this site?
+
+The [UVA Equity Center](https://virginiaequitycenter.org/), in consultation with the Albemarle County Office of Equity and Inclusion, developed this tool. [Michele Claibourn](https://mclaibourn.github.io/) created the interactive data visualizations in R and Shiny, building on the prior work of the Charlottesville Regional Equity Atlas. The code for the site will be made available on Github.

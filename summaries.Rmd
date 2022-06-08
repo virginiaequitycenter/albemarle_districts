@@ -1,0 +1,106 @@
+---
+title: "Census Redistricting Data"
+author: "Michele Claibourn"
+date: "February 10, 2022"
+output: html_document
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+
+library(tidyverse)
+library(readxl)
+library(janitor)
+library(plotly)
+
+crd <- read_excel("options/Proposed 2020 Magisterial District and Voting Precincts Demographics_Final.xlsx",
+                  sheet = 2)
+
+crd <- crd %>% clean_names()
+```
+
+
+## Summaries of proposed boundaries
+
+Albemarle County staff provide the population and population by race and ethnicity counts for each of the proposed district boundary options in tables on the [County webpage](https://albemarle.legistar.com/View.ashx?M=F&ID=10428563&GUID=51C74483-49E2-41D9-97C8-F9B94CB37C6B).[^1] The figures below present these population counts and percents visually to make comparison between the options and current districts easier.
+
+### Population Counts by District
+
+This figure plots each of Albemarle County's six magisterial districts by total population size and by the size of racial and ethnic subpopulations. The first panel, for example, shows that the population within each current district ranges from 17,366 (Scottsville) to 20,526 (Rio). Option 1 boundaries reduce this range from a low of 17,962 (Samuel Miller) to a high of 19,461 (White Hall).
+
+```{r count}
+# plot counts
+crd_counts_long <-
+  crd %>% select(option, district, total_pop, totalhisp, totalnh,
+                 whitenh, blacknh, aiannh, asiannh, hpinh, othernh, mltmnnh) %>% 
+  pivot_longer(-c(option, district), names_to = "population", values_to = "counts")
+
+crd_counts_long <- crd_counts_long %>% 
+  mutate(population = factor(population, 
+                             levels = c("total_pop", "totalnh", "totalhisp",
+                                        "whitenh", "blacknh", "asiannh",
+                                        "othernh", "aiannh", "mltmnnh", "hpinh"),
+                             labels = c("Total Population", "Non-Hispanic, All Races",
+                                        "Hispanic, All Races", "White, Non-Hispanic",
+                                        "Black, Non-Hispanic", "Asian, Non-Hispanic",
+                                        "Other Race, Non-Hispanic", "American Indian, Alaskan Native, NH",
+                                        "Multiracial, Non-Hispanic", "Hawaiian, Pacific Islander, NH"))
+         )
+
+counts <- crd_counts_long %>% 
+  ggplot(aes(x = fct_rev(option), y = counts, color = option, label = district)) +
+  geom_point() +
+  scale_color_manual(values = c("grey", "purple", "red", "#ff7f00")) +
+  coord_flip() +
+  facet_wrap(~population, scales = "free_x", ncol = 3) +
+  labs(y = "Population Counts", x = "") +
+  guides(color = "none")
+
+ggplotly(counts, tooltip = c("y", "color", "label")) %>% 
+  layout(showlegend = FALSE)
+
+```
+
+### Population Percents by District
+
+The figure below represents the same data but in terms of population percents. For example, the first panel shows that the percent of the population in each district that identifies as non-Hispanic ranges from 3.8% (White Hall) to 10.8% (Scottsville). This range remains approximately the same for each of the proposed new boundaries.
+
+```{r percent}
+# plot percents
+crd_percent_long <-
+  crd %>% select(option, district, totalhisp_percent, totalnh_percent,
+                 whitenh_percent, blacknh_percent, aiannh_percent, 
+                 asiannh_percent, hpinh_percent, othernh_percent, 
+                 mltmnnh_percent) %>% 
+  pivot_longer(-c(option, district), names_to = "population", values_to = "percent")
+
+crd_percent_long <- crd_percent_long %>% 
+  mutate(population = factor(population, 
+                             levels = c("totalhisp_percent", "totalnh_percent",
+                                        "whitenh_percent", "blacknh_percent", 
+                                        "asiannh_percent", "othernh_percent", 
+                                        "aiannh_percent", "mltmnnh_percent", 
+                                        "hpinh_percent"),
+                             labels = c("Non-Hispanic, All Races",
+                                        "Hispanic, All Races", "White, Non-Hispanic",
+                                        "Black, Non-Hispanic", "Asian, Non-Hispanic",
+                                        "Other Race, Non-Hispanic", "American Indian, Alaskan Native, NH",
+                                        "Multiracial, Non-Hispanic", "Hawaiian, Pacific Islander, NH"))
+  )
+
+percent <- crd_percent_long %>% 
+  ggplot(aes(x = fct_rev(option), y = percent, color = option, label = district)) +
+  geom_point() +
+  scale_color_manual(values = c("grey", "purple", "red", "#ff7f00")) +
+  coord_flip() +
+  facet_wrap(~population, scales = "free_x") +
+  labs(y = "Population Percents", x = "") +
+  guides(color = "none")
+
+ggplotly(percent, tooltip = c("y", "color", "label")) %>% 
+  layout(showlegend = FALSE)
+
+
+```
+
+
+[^1]: The counts are derived from the [Redistricting Data for Albemarle County](https://data.census.gov/cedsci/all?g=0500000US51003%241000000&y=2020&d=DEC%20Redistricting%20Data%20%28PL%2094-171%29), available from the the census' data site. 

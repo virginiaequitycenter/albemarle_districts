@@ -1,0 +1,7 @@
+**/decennial_redistricting
+**/options
+**/misc
+
+*.Rproj
+*.Rproj.user
+*.Rhistory
